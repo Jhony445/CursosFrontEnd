@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router'; // 👈 Importar Router
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.component.html',
@@ -13,7 +12,7 @@ export class RegistroComponent {
   showPassword = false;
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private router: Router) { // 👈 Inyectar Router
+  constructor(private fb: FormBuilder, private router: Router) {
     this.registerForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
@@ -61,7 +60,6 @@ export class RegistroComponent {
   onSubmit() {
     if (this.registerForm.valid) {
       console.log('Datos enviados:', this.registerForm.value);
-      // Aquí puedes llamar a tu servicio de registro o lo que necesites
     }
   }
 
@@ -73,8 +71,6 @@ export class RegistroComponent {
       }, 500);
     }
   }
-
-  // 👇 Redirección final basada en el rol
   finalRedirect() {
     if (this.selectedRole === 'instructor') {
       this.router.navigate(['/instructores']);

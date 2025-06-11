@@ -1,38 +1,31 @@
-/* Animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Modal animation */
 .fixed.inset-0 {
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Card hover effect */
 .bg-white:hover {
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
 
-/* Button hover effects */
 button:hover {
   transform: translateY(-1px);
   transition: transform 0.2s ease;
 }
 
-/* Focus styles */
 input:focus, select:focus, textarea:focus, button:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.3);
 }
 
-/* Smooth transitions */
 input, select, textarea, button {
   transition: all 0.2s ease;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }

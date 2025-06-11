@@ -1,4 +1,3 @@
-// core/models/usuario.model.ts
 export interface LoginRequest {
   correo: string;
   contrasena: string;

@@ -1,4 +1,3 @@
-// src/app/views/cursos/cursos.component.ts
 import { Component } from '@angular/core';
 
 @Component({

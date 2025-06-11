@@ -24,7 +24,7 @@ const routes: Routes = [
   { path: 'cursos',       component: CursosComponent },       // /cursos
   { path: 'login',        component: LoginComponent },        // /login
   { path: 'registro',     component: RegistroComponent },     // /registro
-  { path: '**',           redirectTo: '' }                    // Cualquier otra → Home
+  { path: '**',           redirectTo: '' }                 
 ];
 
 @NgModule({
@@ -42,7 +42,7 @@ const routes: Routes = [
     BrowserModule,
      ReactiveFormsModule,
      HttpClientModule, 
-    RouterModule.forRoot(routes)  // ← aquí se cargan las rutas
+    RouterModule.forRoot(routes)
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -11,7 +11,6 @@ export class AppComponent {
   constructor(private router: Router) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        // Oculta el navbar en /login y /registro
         this.showNavbar = !['/login', '/registro'].includes(event.urlAfterRedirects);
       }
     });

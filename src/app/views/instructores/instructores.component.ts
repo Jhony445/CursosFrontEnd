@@ -246,12 +246,10 @@ export class InstructoresComponent {
       const evaluationData = this.evaluationForm.value;
       
       if (this.editingEvaluation) {
-        // Update existing evaluation
         Object.assign(this.editingEvaluation, evaluationData);
       } else {
-        // Add new evaluation
         const newEvaluation = {
-          id: Date.now(), // Generate unique ID
+          id: Date.now(),
           ...evaluationData
         };
         this.selectedCourseForModule.evaluations.push(newEvaluation);
@@ -266,7 +264,6 @@ export class InstructoresComponent {
   }
 
   editEvaluation(evaluation: any) {
-    // Find the module that contains this evaluation
     for (const course of this.courses) {
       for (const module of course.modules) {
         if (module.evaluations.includes(evaluation)) {
@@ -279,7 +276,6 @@ export class InstructoresComponent {
 
   deleteEvaluation(evaluation: any) {
     if (confirm(`¿Estás seguro de que quieres eliminar la evaluación "${evaluation.title}"?`)) {
-      // Find the module that contains this evaluation
       for (const course of this.courses) {
         for (const module of course.modules) {
           const index = module.evaluations.indexOf(evaluation);
