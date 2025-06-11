@@ -1,0 +1,44 @@
+/* Animación para el menú móvil */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* Mejoras de UX */
+a {
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Estilo activo mejorado */
+a.router-link-active {
+  color: theme('colors.primary.500');
+  background-color: theme('colors.primary.50');
+}
+
+/* Efecto hover sutil */
+a:hover {
+  transform: translateY(-1px);
+}
+
+/* Botón principal con sombra sutil al hover */
+a.bg-primary-500:hover {
+  box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.2), 0 2px 4px -1px rgba(14, 165, 233, 0.06);
+}
+
+/* Mejorar accesibilidad para enfoque */
+a:focus-visible {
+  outline: 2px solid theme('colors.primary.300');
+  outline-offset: 2px;
+  border-radius: theme('borderRadius.lg');
+}
+
+/* Separador visual para menú móvil */
+.pt-3.border-t {
+  border-top-width: 1px;
+}

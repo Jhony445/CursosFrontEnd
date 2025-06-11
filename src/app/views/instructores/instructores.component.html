@@ -1,0 +1,307 @@
+<div class="min-h-screen bg-blue-50 pt-20 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-neutral-900">Panel del Instructor</h1>
+        <p class="text-neutral-600 mt-2">Gestiona tus cursos, módulos y evaluaciones</p>
+      </div>
+      <button (click)="openCourseModal()"
+              class="mt-4 md:mt-0 px-5 py-3 bg-primary-500 text-white font-medium rounded-lg hover:bg-primary-600 transition-colors duration-200 shadow-sm hover:shadow-md flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        </svg>
+        Nuevo Curso
+      </button>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white rounded-xl shadow-sm p-6">
+        <div class="flex items-center">
+          <div class="p-3 rounded-lg bg-blue-100 text-blue-600 mr-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm text-neutral-500">Cursos activos</p>
+            <p class="text-2xl font-bold text-neutral-900">5</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-white rounded-xl shadow-sm p-6">
+        <div class="flex items-center">
+          <div class="p-3 rounded-lg bg-green-100 text-green-600 mr-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm text-neutral-500">Módulos creados</p>
+            <p class="text-2xl font-bold text-neutral-900">24</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-white rounded-xl shadow-sm p-6">
+        <div class="flex items-center">
+          <div class="p-3 rounded-lg bg-purple-100 text-purple-600 mr-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm text-neutral-500">Evaluaciones</p>
+            <p class="text-2xl font-bold text-neutral-900">48</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Courses List -->
+    <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+      <div class="px-6 py-4 border-b border-neutral-100">
+        <h2 class="text-xl font-semibold text-neutral-800">Tus Cursos</h2>
+      </div>
+      
+      <div class="divide-y divide-neutral-100">
+        <!-- Course Item -->
+        <div *ngFor="let course of courses" class="p-6">
+          <div class="flex flex-col md:flex-row md:items-start justify-between">
+            <div class="flex-1">
+              <div class="flex items-start">
+                <div class="flex-shrink-0 mr-4">
+                  <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16"></div>
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-neutral-900">{{ course.title }}</h3>
+                  <p class="text-neutral-600 mt-1">{{ course.description }}</p>
+                  <div class="flex items-center mt-3">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                      {{ course.modules.length }} módulos
+                    </span>
+                    <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      {{ getTotalEvaluations(course) }} evaluaciones
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Modules List -->
+              <div class="mt-4 ml-20">
+                <div *ngFor="let module of course.modules" class="mb-4 last:mb-0">
+                  <div class="flex items-start">
+                    <div class="flex-shrink-0 mt-1 mr-3 text-primary-500">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                    </div>
+                    <div class="flex-1">
+                      <h4 class="font-medium text-neutral-800">{{ module.title }}</h4>
+                      <p class="text-sm text-neutral-600">{{ module.description }}</p>
+                      
+                      <!-- Evaluations List -->
+                      <div class="mt-2 ml-6">
+                        <div *ngFor="let evaluation of module.evaluations" class="flex items-center py-2 border-b border-neutral-100 last:border-0">
+                          <div class="flex-shrink-0 mr-3 text-purple-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                          </div>
+                          <div class="flex-1">
+                            <p class="text-sm font-medium text-neutral-700">{{ evaluation.title }}</p>
+                            <p class="text-xs text-neutral-500">{{ evaluation.type }} - {{ evaluation.questions }} preguntas</p>
+                          </div>
+                          <div class="flex space-x-2">
+                            <button (click)="editEvaluation(evaluation)" class="text-neutral-500 hover:text-primary-500">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                              </svg>
+                            </button>
+                            <button (click)="deleteEvaluation(evaluation)" class="text-neutral-500 hover:text-red-500">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="flex space-x-2 ml-4">
+                      <button (click)="editModule(module)" class="text-neutral-500 hover:text-primary-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                      </button>
+                      <button (click)="deleteModule(module)" class="text-neutral-500 hover:text-red-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
+                      <button (click)="addEvaluation(module)" class="flex items-center text-sm text-primary-600 hover:text-primary-800">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        Evaluación
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
+                <button (click)="addModule(course)" class="flex items-center text-sm text-primary-600 hover:text-primary-800 mt-4 ml-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  Agregar módulo
+                </button>
+              </div>
+            </div>
+            
+            <!-- Course Actions -->
+            <div class="flex space-x-3 mt-4 md:mt-0">
+              <button (click)="editCourse(course)" class="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+              </button>
+              <button (click)="deleteCourse(course)" class="px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Course Modal -->
+  <div *ngIf="showCourseModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md">
+      <div class="px-6 py-4 border-b border-neutral-100 flex justify-between items-center">
+        <h3 class="text-lg font-semibold text-neutral-800">
+          {{ editingCourse ? 'Editar Curso' : 'Nuevo Curso' }}
+        </h3>
+        <button (click)="closeCourseModal()" class="text-neutral-400 hover:text-neutral-600">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
+      <div class="p-6">
+        <form [formGroup]="courseForm" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-neutral-700 mb-1">Título del curso</label>
+            <input formControlName="title" type="text" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-neutral-700 mb-1">Descripción</label>
+            <textarea formControlName="description" rows="3" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"></textarea>
+          </div>
+        </form>
+      </div>
+      
+      <div class="px-6 py-4 border-t border-neutral-100 flex justify-end space-x-3">
+        <button (click)="closeCourseModal()" class="px-4 py-2 text-neutral-600 bg-white border border-neutral-300 rounded-lg hover:bg-neutral-50">
+          Cancelar
+        </button>
+        <button (click)="saveCourse()" class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600">
+          {{ editingCourse ? 'Actualizar' : 'Crear' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Module Modal -->
+  <div *ngIf="showModuleModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md">
+      <div class="px-6 py-4 border-b border-neutral-100 flex justify-between items-center">
+        <h3 class="text-lg font-semibold text-neutral-800">
+          {{ editingModule ? 'Editar Módulo' : 'Nuevo Módulo' }}
+        </h3>
+        <button (click)="closeModuleModal()" class="text-neutral-400 hover:text-neutral-600">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
+      <div class="p-6">
+        <form [formGroup]="moduleForm" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-neutral-700 mb-1">Título del módulo</label>
+            <input formControlName="title" type="text" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-neutral-700 mb-1">Descripción</label>
+            <textarea formControlName="description" rows="3" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"></textarea>
+          </div>
+        </form>
+      </div>
+      
+      <div class="px-6 py-4 border-t border-neutral-100 flex justify-end space-x-3">
+        <button (click)="closeModuleModal()" class="px-4 py-2 text-neutral-600 bg-white border border-neutral-300 rounded-lg hover:bg-neutral-50">
+          Cancelar
+        </button>
+        <button (click)="saveModule()" class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600">
+          {{ editingModule ? 'Actualizar' : 'Crear' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Evaluation Modal -->
+  <div *ngIf="showEvaluationModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md">
+      <div class="px-6 py-4 border-b border-neutral-100 flex justify-between items-center">
+        <h3 class="text-lg font-semibold text-neutral-800">
+          {{ editingEvaluation ? 'Editar Evaluación' : 'Nueva Evaluación' }}
+        </h3>
+        <button (click)="closeEvaluationModal()" class="text-neutral-400 hover:text-neutral-600">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
+      <div class="p-6">
+        <form [formGroup]="evaluationForm" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-neutral-700 mb-1">Título de evaluación</label>
+            <input formControlName="title" type="text" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-neutral-700 mb-1">Tipo de evaluación</label>
+            <select formControlName="type" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+              <option value="Quiz">Quiz</option>
+              <option value="Examen">Examen</option>
+              <option value="Práctica">Práctica</option>
+              <option value="Proyecto">Proyecto</option>
+            </select>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-neutral-700 mb-1">Número de preguntas</label>
+            <input formControlName="questions" type="number" min="1" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+          </div>
+        </form>
+      </div>
+      
+      <div class="px-6 py-4 border-t border-neutral-100 flex justify-end space-x-3">
+        <button (click)="closeEvaluationModal()" class="px-4 py-2 text-neutral-600 bg-white border border-neutral-300 rounded-lg hover:bg-neutral-50">
+          Cancelar
+        </button>
+        <button (click)="saveEvaluation()" class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600">
+          {{ editingEvaluation ? 'Actualizar' : 'Crear' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
