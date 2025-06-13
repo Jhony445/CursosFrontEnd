@@ -19,26 +19,42 @@ interface JwtPayload {
 export class AuthService {
   private apiUrl = 'https://localhost:7021/api/Usuario/login';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   login(data: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(this.apiUrl, data).pipe(
       tap(response => {
         localStorage.setItem('auth_token', response.token);
+
+        const decoded = jwtDecode<JwtPayload>(response.token);
+        const expirationDate = decoded.exp * 1000; // convertir a milisegundos
+        localStorage.setItem('auth_expire', expirationDate.toString());
       })
     );
   }
 
-  logout(): void {
-    localStorage.removeItem('auth_token');
-  }
+
+logout(): void {
+  ['auth_token', 'auth_expire'].forEach(key => {
+    localStorage.removeItem(key);
+    sessionStorage.removeItem(key);
+  });
+}
+
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('auth_token');
+    const expire = sessionStorage.getItem('auth_expire') || localStorage.getItem('auth_expire');
+    if (!expire) return false;
+
+    if (Date.now() > +expire) {
+      this.logout();
+      return false;
+    }
+    return !!this.getToken();
   }
 
   getToken(): string | null {
-    return localStorage.getItem('auth_token');
+    return sessionStorage.getItem('auth_token') || localStorage.getItem('auth_token');
   }
 
   getUserRole(): 'Instructor' | 'Estudiante' | null {

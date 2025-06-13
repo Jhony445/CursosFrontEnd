@@ -1,6 +1,7 @@
 <nav class="bg-white border-b border-neutral-100 shadow-sm fixed w-full z-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6">
     <div class="flex justify-between h-16">
+      <!-- Logo Completo -->
       <div class="flex items-center">
         <a routerLink="/" class="flex items-center space-x-2">
           <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
@@ -12,19 +13,70 @@
           <span class="text-xl font-bold text-neutral-900 tracking-tight">LearnHub</span>
         </a>
       </div>
+
+      <!-- Menú Desktop -->
       <div class="hidden md:flex items-center space-x-3">
-        <a routerLink="/cursos" routerLinkActive="text-primary-500 bg-primary-50"
+        <a *ngIf="!isLoggedIn || role === 'Estudiante'" routerLink="/cursos"
+          routerLinkActive="text-primary-500 bg-primary-50"
           class="px-4 py-2 rounded-lg font-medium text-neutral-700 hover:bg-neutral-50 hover:text-primary-500 transition-all duration-200">
           Cursos
         </a>
-        <a routerLink="/login"
-          class="px-4 py-2 rounded-lg font-medium text-neutral-700 hover:bg-neutral-50 hover:text-primary-500 transition-all duration-200">
-          Iniciar Sesión
-        </a>
-        <a routerLink="/registro"
-          class="px-4 py-2 rounded-lg font-medium text-white bg-primary-500 hover:bg-primary-600 transition-colors duration-200 shadow-sm hover:shadow-md">
-          Crear Cuenta
-        </a>
+
+
+        <ng-container *ngIf="isLoggedIn; else guestLinks">
+          <a *ngIf="role === 'Instructor'" routerLink="/instructores" routerLinkActive="text-primary-500 bg-primary-50"
+            class="px-4 py-2 rounded-lg font-medium text-neutral-700 hover:bg-neutral-50 hover:text-primary-500 transition-all duration-200">
+            Panel Instructor
+          </a>
+
+          <div class="relative">
+            <button (click)="toggleDropdown()"
+              class="flex items-center px-4 py-2 rounded-lg font-medium text-neutral-700 hover:bg-neutral-50 hover:text-primary-500 transition-all duration-200">
+              <span class="mr-2">{{ username }}</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            <div *ngIf="isDropdownOpen"
+              class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-neutral-100 z-50 overflow-hidden">
+              <a routerLink="/perfil"
+                class="block px-4 py-3 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors duration-200">
+                <div class="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-primary-500" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  Perfil
+                </div>
+              </a>
+              <button (click)="logout()"
+                class="w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-neutral-50 transition-colors duration-200">
+                <div class="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-red-500" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                  Cerrar Sesión
+                </div>
+              </button>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-template #guestLinks>
+          <a routerLink="/login"
+            class="px-4 py-2 rounded-lg font-medium text-neutral-700 hover:bg-neutral-50 hover:text-primary-500 transition-colors duration-200">
+            Iniciar Sesión
+          </a>
+          <a routerLink="/registro"
+            class="px-4 py-2 rounded-lg font-medium text-white bg-primary-500 hover:bg-primary-600 transition-colors duration-200 shadow-sm hover:shadow-md">
+            Crear Cuenta
+          </a>
+        </ng-template>
       </div>
 
       <div class="md:hidden flex items-center">
@@ -40,15 +92,33 @@
 
   <div *ngIf="isMenuOpen" class="md:hidden bg-white border-t border-neutral-100 animate-fadeIn">
     <div class="px-4 py-3 space-y-1">
-      <a routerLink="/cursos"
+      <a *ngIf="!isLoggedIn || role === 'Estudiante'" routerLink="/cursos"
         class="block px-4 py-3 rounded-lg text-base font-medium text-neutral-700 hover:bg-neutral-50 hover:text-primary-500"
         (click)="closeMenu()">
         Cursos
       </a>
 
-      <div class="pt-3 border-t border-neutral-100 mt-2">
+
+      <ng-container *ngIf="isLoggedIn; else mobileGuest">
+        <a *ngIf="role === 'Instructor'" routerLink="/instructores"
+          class="block px-4 py-3 rounded-lg text-base font-medium text-neutral-700 hover:bg-neutral-50 hover:text-primary-500"
+          (click)="closeMenu()">
+          Panel Instructor
+        </a>
+        <a routerLink="/perfil"
+          class="block px-4 py-3 rounded-lg text-base font-medium text-neutral-700 hover:bg-neutral-50 hover:text-primary-500"
+          (click)="closeMenu()">
+          Perfil
+        </a>
+        <button (click)="logout(); closeMenu()"
+          class="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-red-600 hover:bg-neutral-50">
+          Cerrar Sesión
+        </button>
+      </ng-container>
+
+      <ng-template #mobileGuest>
         <a routerLink="/login"
-          class="block px-4 py-3 rounded-lg text-base font-medium text-neutral-700 hover:bg-neutral-50 mb-2"
+          class="block px-4 py-3 rounded-lg text-base font-medium text-neutral-700 hover:bg-neutral-50 hover:text-primary-500"
           (click)="closeMenu()">
           Iniciar Sesión
         </a>
@@ -57,7 +127,7 @@
           (click)="closeMenu()">
           Crear Cuenta
         </a>
-      </div>
+      </ng-template>
     </div>
   </div>
 </nav>

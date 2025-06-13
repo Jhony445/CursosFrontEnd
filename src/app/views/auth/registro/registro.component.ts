@@ -1,6 +1,10 @@
+// src/app/views/auth/registro/registro.component.ts
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UsuariosService } from '../../../core/services/usuarios.service';
+import { RegisterRequest, RegisterResponse } from '../../../core/models/usuario.model';
+
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.component.html',
@@ -8,26 +12,28 @@ import { Router } from '@angular/router';
 })
 export class RegistroComponent {
   currentStep = 1;
-  selectedRole: string | null = null;
+  selectedRole: 'Instructor' | 'Estudiante' | null = null;
   showPassword = false;
+  loading = false;
+  errorMessage: string | null = null;
+  successMessage: string | null = null;
+
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private usuariosService: UsuariosService
+  ) {
     this.registerForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      role: ['']
+      role: ['', Validators.required]
     });
   }
 
   nextStep() {
-    console.log('>> nextStep llamado. Validaciones:', {
-      name: this.registerForm.get('name')?.valid,
-      email: this.registerForm.get('email')?.valid,
-      password: this.registerForm.get('password')?.valid,
-      formStatus: this.registerForm.status
-    });
     if (
       this.currentStep === 1 &&
       this.registerForm.get('name')?.valid &&
@@ -48,7 +54,7 @@ export class RegistroComponent {
     }
   }
 
-  selectRole(role: string) {
+  selectRole(role: 'Instructor' | 'Estudiante') {
     this.selectedRole = role;
     this.registerForm.patchValue({ role });
   }
@@ -57,22 +63,41 @@ export class RegistroComponent {
     this.showPassword = !this.showPassword;
   }
 
-  onSubmit() {
-    if (this.registerForm.valid) {
-      console.log('Datos enviados:', this.registerForm.value);
+  submitForm() {
+    if (this.registerForm.invalid || !this.selectedRole) {
+      this.errorMessage = 'Por favor completa todos los campos y selecciona un rol.';
+      return;
     }
+
+    this.loading = true;
+    this.errorMessage = null;
+
+    const payload: RegisterRequest = {
+      nombre: this.registerForm.value.name,
+      correo: this.registerForm.value.email,
+      contrasena: this.registerForm.value.password,
+      rol: this.selectedRole
+    };
+
+    this.usuariosService.register(payload).subscribe({
+      next: (res: RegisterResponse) => {
+        this.loading = false;
+        if (res.tipoError === 1) {
+          this.successMessage = res.mensaje;
+          this.currentStep = 3;
+        } else {
+          this.errorMessage = res.mensaje;
+        }
+      },
+      error: () => {
+        this.loading = false;
+        this.errorMessage = 'Ocurrió un error al registrar. Intenta de nuevo más tarde.';
+      }
+    });
   }
 
-  submitForm() {
-    if (this.selectedRole) {
-      console.log('Form submitted:', this.registerForm.value);
-      setTimeout(() => {
-        this.currentStep = 3;
-      }, 500);
-    }
-  }
   finalRedirect() {
-    if (this.selectedRole === 'instructor') {
+    if (this.selectedRole === 'Instructor') {
       this.router.navigate(['/instructores']);
     } else {
       this.router.navigate(['/cursos']);

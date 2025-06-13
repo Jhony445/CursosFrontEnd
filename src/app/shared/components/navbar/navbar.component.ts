@@ -11,15 +11,13 @@ export class NavbarComponent implements OnInit {
   isLoggedIn = false;
   role: 'Instructor' | 'Estudiante' | null = null;
   username: string | null = null;
-  userRole: 'Instructor' | 'Estudiante' | null = null;
+  isDropdownOpen = false;
 
-
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
     this.isLoggedIn = this.authService.isLoggedIn();
     const decoded = this.authService.getDecodedToken();
-
     if (decoded) {
       this.role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
       this.username = decoded.unique_name;
@@ -28,22 +26,33 @@ export class NavbarComponent implements OnInit {
 
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
+    if (this.isMenuOpen) this.isDropdownOpen = false;
   }
 
   closeMenu(): void {
     this.isMenuOpen = false;
   }
 
+  toggleDropdown(): void {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
   logout(): void {
     this.authService.logout();
+    this.isDropdownOpen = false;
     window.location.href = '/';
   }
 
   @HostListener('document:click', ['$event'])
   onClick(event: Event): void {
     const target = event.target as HTMLElement;
+
     if (!target.closest('nav') && this.isMenuOpen) {
       this.closeMenu();
+    }
+
+    if (!target.closest('.relative') && this.isDropdownOpen) {
+      this.isDropdownOpen = false;
     }
   }
 
@@ -51,6 +60,9 @@ export class NavbarComponent implements OnInit {
   onScroll(): void {
     if (this.isMenuOpen) {
       this.closeMenu();
+    }
+    if (this.isDropdownOpen) {
+      this.isDropdownOpen = false;
     }
   }
 }

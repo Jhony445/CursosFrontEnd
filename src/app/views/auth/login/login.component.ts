@@ -14,6 +14,7 @@ export class LoginComponent {
   showPassword = false;
   loading = false;
   errorMessage: string | null = null;
+  shakeAlert = false;
 
   constructor(
     private fb: FormBuilder,
@@ -38,6 +39,7 @@ export class LoginComponent {
 
     this.loading = true;
     this.errorMessage = null;
+    this.shakeAlert = false;
 
     const credentials: LoginRequest = {
       correo: this.loginForm.value.email,
@@ -45,25 +47,51 @@ export class LoginComponent {
     };
 
     this.authService.login(credentials).subscribe({
-      next: () => {
-        const role = this.authService.getUserRole();
+      next: (response) => {
+        const token = response.token;
+        const remember = this.loginForm.value.rememberMe as boolean;
+        const expireAt = Date.now() + 20 * 60 * 1000; // 20 minutos
 
+        if (remember) {
+          localStorage.setItem('auth_token', token);
+          localStorage.setItem('auth_expire', expireAt.toString());
+          // Borra cualquier sesión previa
+          sessionStorage.removeItem('auth_token');
+          sessionStorage.removeItem('auth_expire');
+        } else {
+          sessionStorage.setItem('auth_token', token);
+          sessionStorage.setItem('auth_expire', expireAt.toString());
+          // Borra cualquier token recordado
+          localStorage.removeItem('auth_token');
+          localStorage.removeItem('auth_expire');
+        }
+
+        // Ahora redirige según rol
+        const role = this.authService.getUserRole();
         if (role === 'Instructor') {
           this.router.navigate(['/instructores']);
         } else if (role === 'Estudiante') {
           this.router.navigate(['/cursos']);
         } else {
-          this.errorMessage = 'Rol no reconocido.';
+          this.showError('Rol no reconocido.');
         }
-
         this.loading = false;
       },
       error: (error) => {
         console.error('Login failed:', error);
-        this.errorMessage = 'Correo o contraseña incorrectos.';
+        this.showError('Correo o contraseña incorrectos.');
         this.loading = false;
       }
     });
+  }
+
+  private showError(message: string) {
+    this.errorMessage = message;
+    this.shakeAlert = true;
+
+    setTimeout(() => {
+      this.shakeAlert = false;
+    }, 600);
   }
 
   goBack() {

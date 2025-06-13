@@ -6,3 +6,15 @@ export interface LoginRequest {
 export interface LoginResponse {
   token: string;
 }
+
+export interface RegisterRequest {
+  nombre: string;
+  correo: string;
+  contrasena: string;
+  rol: 'Instructor' | 'Estudiante';
+}
+
+export interface RegisterResponse {
+  tipoError: number;
+  mensaje: string;
+}

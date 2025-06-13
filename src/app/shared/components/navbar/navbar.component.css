@@ -16,6 +16,7 @@ a {
 a.router-link-active {
   color: theme('colors.primary.500');
   background-color: theme('colors.primary.50');
+  border-radius: theme('borderRadius.lg');
 }
 
 a:hover {
@@ -26,12 +27,29 @@ a.bg-primary-500:hover {
   box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.2), 0 2px 4px -1px rgba(14, 165, 233, 0.06);
 }
 
-a:focus-visible {
+a:focus-visible, button:focus-visible {
   outline: 2px solid theme('colors.primary.300');
   outline-offset: 2px;
   border-radius: theme('borderRadius.lg');
 }
 
-.pt-3.border-t {
+/* Dropdown styles */
+.relative {
+  position: relative;
+}
+
+.shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+[role="menu"] {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.border-t {
   border-top-width: 1px;
+}
+
+.relative button:focus + div {
+  display: block;
 }

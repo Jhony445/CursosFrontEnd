@@ -15,15 +15,15 @@
                 <p class="text-primary-100 mt-1">Únete a nuestra comunidad educativa</p>
             </div>
 
-            <!-- Step 1: Información básica -->
+            <!-- STEP 1: Información básica -->
             <div *ngIf="currentStep === 1" class="px-8 py-8 animate-fadeIn">
                 <h3 class="text-xl font-semibold text-neutral-800 mb-6 text-center">Información básica</h3>
-                <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+                <form [formGroup]="registerForm" (ngSubmit)="nextStep()" class="space-y-6">
                     <!-- Nombre -->
                     <div>
-                        <label for="name" class="block text-sm font-medium text-neutral-700 mb-2">
-                            Nombre completo
-                        </label>
+                        <label for="name" class="block text-sm font-medium text-neutral-700 mb-2">Nombre
+                            completo</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg class="h-5 w-5 text-neutral-400" fill="currentColor" viewBox="0 0 20 20">
@@ -33,29 +33,20 @@
                             </div>
                             <input id="name" formControlName="name" type="text" autocomplete="name" required
                                 placeholder="Tu nombre completo"
-                                class="block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 transition-all duration-200"
-                                [class.border-neutral-300]="!registerForm.get('name')?.invalid || !registerForm.get('name')?.touched"
-                                [class.focus:ring-primary-500]="!registerForm.get('name')?.invalid || !registerForm.get('name')?.touched"
-                                [class.focus:border-primary-500]="!registerForm.get('name')?.invalid || !registerForm.get('name')?.touched"
-                                [class.border-red-500]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched"
-                                [class.focus:ring-red-500]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched"
-                                [class.focus:border-red-500]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" />
+                                class="block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-primary-500 transition-all duration-200"
+                                [class.border-red-500]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" />
                         </div>
                         <div class="mt-1 text-sm text-red-600" *ngIf="registerForm.get('name')?.touched">
-                            <div *ngIf="registerForm.get('name')?.hasError('required')">
-                                El nombre es obligatorio.
-                            </div>
-                            <div *ngIf="registerForm.get('name')?.hasError('minlength')">
-                                Debe tener al menos 3 caracteres.
-                            </div>
+                            <div *ngIf="registerForm.get('name')?.hasError('required')">El nombre es obligatorio.</div>
+                            <div *ngIf="registerForm.get('name')?.hasError('minlength')">Debe tener al menos 3
+                                caracteres.</div>
                         </div>
                     </div>
 
                     <!-- Email -->
                     <div>
-                        <label for="email" class="block text-sm font-medium text-neutral-700 mb-2">
-                            Correo electrónico
-                        </label>
+                        <label for="email" class="block text-sm font-medium text-neutral-700 mb-2">Correo
+                            electrónico</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg class="h-5 w-5 text-neutral-400" fill="currentColor" viewBox="0 0 20 20">
@@ -65,29 +56,19 @@
                             </div>
                             <input id="email" formControlName="email" type="email" autocomplete="email" required
                                 placeholder="tucorreo@ejemplo.com"
-                                class="block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 transition-all duration-200"
-                                [class.border-neutral-300]="!registerForm.get('email')?.invalid || !registerForm.get('email')?.touched"
-                                [class.focus:ring-primary-500]="!registerForm.get('email')?.invalid || !registerForm.get('email')?.touched"
-                                [class.focus:border-primary-500]="!registerForm.get('email')?.invalid || !registerForm.get('email')?.touched"
-                                [class.border-red-500]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
-                                [class.focus:ring-red-500]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
-                                [class.focus:border-red-500]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" />
+                                class="block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-primary-500 transition-all duration-200"
+                                [class.border-red-500]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" />
                         </div>
                         <div class="mt-1 text-sm text-red-600" *ngIf="registerForm.get('email')?.touched">
-                            <div *ngIf="registerForm.get('email')?.hasError('required')">
-                                El correo es obligatorio.
-                            </div>
-                            <div *ngIf="registerForm.get('email')?.hasError('email')">
-                                Debes ingresar un correo válido.
+                            <div *ngIf="registerForm.get('email')?.hasError('required')">El correo es obligatorio.</div>
+                            <div *ngIf="registerForm.get('email')?.hasError('email')">Debes ingresar un correo válido.
                             </div>
                         </div>
                     </div>
 
                     <!-- Password -->
                     <div>
-                        <label for="password" class="block text-sm font-medium text-neutral-700 mb-2">
-                            Contraseña
-                        </label>
+                        <label for="password" class="block text-sm font-medium text-neutral-700 mb-2">Contraseña</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg class="h-5 w-5 text-neutral-400" fill="currentColor" viewBox="0 0 20 20">
@@ -98,13 +79,8 @@
                             </div>
                             <input id="password" formControlName="password" [type]="showPassword ? 'text' : 'password'"
                                 autocomplete="new-password" required placeholder="••••••••"
-                                class="block w-full pl-10 pr-10 py-3 border rounded-lg focus:ring-2 transition-all duration-200"
-                                [class.border-neutral-300]="!registerForm.get('password')?.invalid || !registerForm.get('password')?.touched"
-                                [class.focus:ring-primary-500]="!registerForm.get('password')?.invalid || !registerForm.get('password')?.touched"
-                                [class.focus:border-primary-500]="!registerForm.get('password')?.invalid || !registerForm.get('password')?.touched"
-                                [class.border-red-500]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
-                                [class.focus:ring-red-500]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
-                                [class.focus:border-red-500]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" />
+                                class="block w-full pl-10 pr-10 py-3 border rounded-lg focus:ring-2 focus:ring-primary-500 transition-all duration-200"
+                                [class.border-red-500]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" />
                             <button type="button" (click)="togglePasswordVisibility()"
                                 class="absolute inset-y-0 right-0 pr-3 flex items-center">
                                 <svg class="h-5 w-5 text-neutral-400 hover:text-neutral-500" fill="none"
@@ -117,168 +93,196 @@
                             </button>
                         </div>
                         <div class="mt-1 text-sm text-red-600" *ngIf="registerForm.get('password')?.touched">
-                            <div *ngIf="registerForm.get('password')?.hasError('required')">
-                                La contraseña es obligatoria.
-                            </div>
-                            <div *ngIf="registerForm.get('password')?.hasError('minlength')">
-                                Debe tener al menos 8 caracteres.
-                            </div>
+                            <div *ngIf="registerForm.get('password')?.hasError('required')">La contraseña es
+                                obligatoria.</div>
+                            <div *ngIf="registerForm.get('password')?.hasError('minlength')">Debe tener al menos 8
+                                caracteres.</div>
                         </div>
                         <div class="mt-1 text-xs text-neutral-500">
                             Mínimo 8 caracteres con al menos un número y un símbolo
                         </div>
                     </div>
 
-                    <!-- Next Button -->
+                    <!-- Continuar -->
                     <div class="pt-4">
-                        <button type="button" (click)="nextStep()"
-                            class="w-full px-6 py-3 bg-primary-500 text-white font-medium rounded-lg hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 shadow hover:shadow-md">
+                        <button type="submit"
+                            class="w-full px-6 py-3 bg-primary-500 text-white font-medium rounded-lg hover:bg-primary-600 transition-all duration-200 shadow">
                             Continuar
                         </button>
                     </div>
                 </form>
             </div>
 
-            <!-- Step 2: Selección de rol -->
+            <!-- STEP 2: Selección de rol -->
             <div *ngIf="currentStep === 2" class="px-8 py-8 animate-fadeIn">
-                <h3 class="text-xl font-semibold text-neutral-800 mb-6 text-center">¿Cómo quieres usar la plataforma?
+                <h3 class="text-xl font-semibold text-neutral-800 mb-6 text-center">
+                    ¿Cómo quieres usar la plataforma?
                 </h3>
                 <p class="text-neutral-600 text-center mb-8 max-w-md mx-auto">
-                    Selecciona el rol que mejor se adapte a tus objetivos en nuestra plataforma educativa.
+                    Selecciona el rol que mejor se adapte a tus objetivos.
                 </p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Card: Estudiante -->
-                    <div [ngClass]="{'ring-2 ring-primary-500': selectedRole === 'student'}"
-                        class="border border-neutral-200 rounded-xl p-6 cursor-pointer hover:shadow-md transition-all duration-200"
-                        (click)="selectRole('student')">
-                        <div class="flex flex-col items-center">
-                            <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4">
-                                <svg class="w-8 h-8 text-primary-500" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                        d="M12 14l9-5-9-5-9 5 9 5z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                        d="M12 14l9-5-9-5-9 5 9 5z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                        d="M9 10v6l7-3.5L9 10z" />
-                                </svg>
+
+                <div class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <!-- Card: Estudiante -->
+                        <div (click)="selectRole('Estudiante')"
+                            [ngClass]="{'ring-2 ring-primary-500': selectedRole === 'Estudiante'}"
+                            class="border border-neutral-200 rounded-xl p-6 cursor-pointer hover:shadow-md transition-all duration-200">
+                            <div class="flex flex-col items-center">
+                                <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4">
+                                    <svg class="w-8 h-8 text-primary-500" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                            d="M12 14l9-5-9-5-9 5 9 5z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                            d="M9 10v6l7-3.5L9 10z" />
+                                    </svg>
+                                </div>
+                                <h4 class="text-lg font-bold text-neutral-800 mb-2">Quiero aprender</h4>
+                                <p class="text-sm text-neutral-600 text-center mb-4">
+                                    Accede a cursos de alta calidad, sigue tu progreso y alcanza tus metas
+                                    profesionales.
+                                </p>
+                                <div class="space-y-2">
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-sm">Acceso a todos los cursos</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-sm">Seguimiento de progreso</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-sm">Certificados de finalización</span>
+                                    </div>
+                                </div>
                             </div>
-                            <h4 class="text-lg font-bold text-neutral-800 mb-2">Quiero aprender</h4>
-                            <p class="text-sm text-neutral-600 text-center">
-                                Accede a cursos de alta calidad, sigue tu progreso y alcanza tus metas profesionales.
-                            </p>
-                            <div class="mt-4">
-                                <div class="flex items-center mb-2">
-                                    <svg class="w-5 h-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24"
+                        </div>
+
+                        <!-- Card: Instructor -->
+                        <div (click)="selectRole('Instructor')"
+                            [ngClass]="{'ring-2 ring-primary-500': selectedRole === 'Instructor'}"
+                            class="border border-neutral-200 rounded-xl p-6 cursor-pointer hover:shadow-md transition-all duration-200">
+                            <div class="flex flex-col items-center">
+                                <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4">
+                                    <svg class="w-8 h-8 text-primary-500" fill="none" viewBox="0 0 24 24"
                                         stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                     </svg>
-                                    <span class="text-sm">Acceso a todos los cursos</span>
                                 </div>
-                                <div class="flex items-center mb-2">
-                                    <svg class="w-5 h-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-sm">Seguimiento de progreso</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <svg class="w-5 h-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-sm">Certificados de finalización</span>
+                                <h4 class="text-lg font-bold text-neutral-800 mb-2">Quiero crear cursos</h4>
+                                <p class="text-sm text-neutral-600 text-center mb-4">
+                                    Comparte tu conocimiento, crea contenido educativo y ayuda a otros a crecer
+                                    profesionalmente.
+                                </p>
+                                <div class="space-y-2">
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-sm">Crea y publica tus cursos</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-sm">Acceso a herramientas educativas</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-sm">Monetiza tu conocimiento</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Card: Instructor -->
-                    <div [ngClass]="{'ring-2 ring-primary-500': selectedRole === 'instructor'}"
-                        class="border border-neutral-200 rounded-xl p-6 cursor-pointer hover:shadow-md transition-all duration-200"
-                        (click)="selectRole('instructor')">
-                        <div class="flex flex-col items-center">
-                            <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4">
-                                <svg class="w-8 h-8 text-primary-500" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                                </svg>
-                            </div>
-                            <h4 class="text-lg font-bold text-neutral-800 mb-2">Quiero crear cursos</h4>
-                            <p class="text-sm text-neutral-600 text-center">
-                                Comparte tu conocimiento, crea contenido educativo y ayuda a otros a crecer
-                                profesionalmente.
-                            </p>
-                            <div class="mt-4">
-                                <div class="flex items-center mb-2">
-                                    <svg class="w-5 h-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-sm">Crea y publica tus cursos</span>
-                                </div>
-                                <div class="flex items-center mb-2">
-                                    <svg class="w-5 h-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-sm">Acceso a herramientas educativas</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <svg class="w-5 h-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-sm">Monetiza tu conocimiento</span>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- Alertas -->
+                    <div *ngIf="errorMessage"
+                        class="mb-4 bg-red-50 border-l-4 border-red-500 p-4 text-red-700 rounded-lg">
+                        {{ errorMessage }}
                     </div>
-                </div>
+                    <div *ngIf="successMessage"
+                        class="mb-4 bg-green-50 border-l-4 border-green-500 p-4 text-green-700 rounded-lg">
+                        {{ successMessage }}
+                    </div>
 
-                <!-- Navigation Buttons -->
-                <div class="flex justify-between mt-8">
-                    <button type="button" (click)="prevStep()"
-                        class="px-6 py-3 text-primary-600 bg-white border border-primary-500 font-medium rounded-lg hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 shadow">
-                        Volver
-                    </button>
-                    <button type="button" (click)="submitForm()" [disabled]="!selectedRole"
-                        [ngClass]="{'bg-primary-400 cursor-not-allowed': !selectedRole, 'bg-primary-500 hover:bg-primary-600': selectedRole}"
-                        class="px-6 py-3 text-white font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 shadow hover:shadow-md">
-                        Crear cuenta
-                    </button>
+                    <!-- Navegación -->
+                    <div class="flex justify-between">
+                        <button type="button" (click)="prevStep()"
+                            class="px-6 py-3 text-primary-600 bg-white border border-primary-500 rounded-lg hover:bg-primary-50">
+                            Volver
+                        </button>
+                        <button type="button" (click)="submitForm()" [disabled]="!selectedRole || loading"
+                            class="px-6 py-3 text-white bg-primary-500 rounded-lg hover:bg-primary-600 transition-all duration-200 shadow disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span *ngIf="!loading">Crear cuenta</span>
+                            <span *ngIf="loading" class="flex items-center">
+                                <svg class="animate-spin h-4 w-4 mr-2 text-white" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                </svg>
+                                Registrando...
+                            </span>
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Step 3: Confirmación -->
+            <!-- STEP 3: Confirmación -->
             <div *ngIf="currentStep === 3" class="px-8 py-12 text-center animate-fadeIn">
                 <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                     <svg class="w-10 h-10 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                     </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-neutral-900 mb-4">¡Cuenta creada con éxito!</h3>
-                <p class="text-neutral-600 max-w-md mx-auto mb-8">
-                    Bienvenido a nuestra plataforma educativa. Tu cuenta ha sido creada exitosamente.
-                    <span *ngIf="selectedRole === 'student'">Ahora puedes explorar nuestros cursos y comenzar tu
-                        aprendizaje.</span>
-                    <span *ngIf="selectedRole === 'instructor'">Ahora puedes comenzar a crear tus propios cursos y
-                        compartir tu conocimiento.</span>
-                </p>
 
-                <div class="flex justify-center gap-4">
-                    <button (click)="finalRedirect()"
-                        class="px-6 py-3 bg-primary-500 text-white font-medium rounded-lg hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 shadow hover:shadow-md">
-                        <span *ngIf="selectedRole === 'student'">Explorar cursos</span>
-                        <span *ngIf="selectedRole === 'instructor'">Crear mi primer curso</span>
+                <h3 class="text-2xl font-bold text-neutral-900 mb-4">¡Cuenta creada con éxito!</h3>
+
+                <div class="max-w-md mx-auto mb-8">
+                    <p class="text-neutral-600 mb-4">
+                        Bienvenido a nuestra plataforma educativa. Tu cuenta ha sido creada exitosamente.
+                    </p>
+                    <p class="text-sm text-neutral-500">
+                        Por favor inicia sesión para acceder a todos los recursos y comenzar tu experiencia de
+                        aprendizaje.
+                    </p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button routerLink="/login"
+                        class="px-6 py-3 bg-primary-500 text-white font-medium rounded-lg hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 shadow hover:shadow-md flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                        </svg>
+                        Iniciar sesión
                     </button>
+
                     <button routerLink="/"
                         class="px-6 py-3 text-primary-600 bg-white border border-primary-500 font-medium rounded-lg hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 shadow">
                         Ir al inicio

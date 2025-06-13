@@ -13,7 +13,22 @@
         <p class="text-primary-100 mt-1">Accede a todos nuestros cursos y recursos</p>
       </div>
 
-      <form [formGroup]="loginForm"  (ngSubmit)="onSubmit()" class="px-8 py-8">
+      <div *ngIf="errorMessage" class="animate-fadeIn">
+        <div class="mx-6 mt-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-lg">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg class="h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-red-700">{{ errorMessage }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="px-8 py-8">
         <div class="mb-6">
           <label for="email" class="block text-sm font-medium text-neutral-700 mb-2">Correo electrónico</label>
           <div class="relative">
@@ -64,9 +79,16 @@
                    class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-neutral-300 rounded">
             <label for="remember-me" class="ml-2 block text-sm text-neutral-700">Recordar sesión</label>
           </div>
-          <button type="submit"
-                  class="px-6 py-3 bg-primary-500 text-white font-medium rounded-lg hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 shadow hover:shadow-md">
-            Iniciar sesión
+          <button type="submit" [disabled]="loading"
+                  class="px-6 py-3 bg-primary-500 text-white font-medium rounded-lg hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 shadow hover:shadow-md disabled:opacity-75 disabled:cursor-not-allowed flex items-center justify-center">
+            <span *ngIf="!loading">Iniciar sesión</span>
+            <span *ngIf="loading" class="flex items-center">
+              <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Verificando...
+            </span>
           </button>
         </div>
 
